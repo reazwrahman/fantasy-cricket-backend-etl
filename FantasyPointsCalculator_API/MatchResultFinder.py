@@ -1,19 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
+from .FantasyPointsCalculator.ScoreCardGenerator.requests_helper import make_request, validate_link
+
 class MatchResultFinder(object): 
     def __init__(self, scorecard_link, team1, team2): 
         self.scorecard_link = scorecard_link  
         self.team1 = team1 
         self.team2 = team2
     
-    def __ExtractPage__(self): 
-        # send an HTTP GET request to the URL and get the page content
-        page = requests.get(self.scorecard_link)
-        html_content = page.content
-
+    def __ExtractPage__(self):
         # create a BeautifulSoup object to parse the HTML content
-        soup = BeautifulSoup(html_content, "lxml")
+        soup = make_request(self.scorecard_link)
         
         # find the match result element
         won_by = list(soup.find_all(lambda tag: tag.name == 'span' and ('won by' in tag.text)))    
