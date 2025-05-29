@@ -12,8 +12,9 @@ pandas==2.2.3
 python-dateutil==2.9.0.post0
 pytz==2025.2
 requests==2.27.1
-s3transfer==0.6.2
+s3transfer==0.13.0
 simplejson==3.18.3
 six==1.17.0
 soupsieve==2.7
+tzdata==2025.2
 urllib3==1.26.20
