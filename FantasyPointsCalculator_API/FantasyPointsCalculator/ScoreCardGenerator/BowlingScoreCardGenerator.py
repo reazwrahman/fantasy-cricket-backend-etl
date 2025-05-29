@@ -11,33 +11,16 @@ import pandas as pd
 import re
 import numpy as np 
 
+from .requests_helper import make_request, validate_link
+
 ############## GET THE DF FOR BATTING SCORE CARD ##################
 class BowlingScoreCard(object): 
     def __init__(self,URL): 
-        self.URL=URL 
-    
-    @staticmethod 
-    def ValidateLink(URL): 
-        try: 
-            page = requests.get(URL)
-            bs = BeautifulSoup(page.content, 'lxml')  
-            
-            table_body=None
-            table_body=bs.find_all('tbody') 
-            
-            if table_body == None: 
-                return False 
-            else: 
-                return True
-            
-        except: 
-            raise Exception('ScoreCardDf::ValidateLink(), Invalid Link was provided, Scraping Can not be completed' ) 
-            
+        self.URL=URL
     
     def __GenerateBowlingDict__(self): 
-        if (BowlingScoreCard.ValidateLink(self.URL)):           
-            page = requests.get(self.URL)
-            bs = BeautifulSoup(page.content, 'lxml')       
+        if validate_link(self.URL):
+            bs = make_request(self.URL)
             table_body=bs.find_all('tbody')
             
             bowling_dict={}
