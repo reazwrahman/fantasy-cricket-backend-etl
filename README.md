@@ -1,6 +1,8 @@
 # Fantasy_Cricket_Backend_Lambda
 Fantasy_Cricket_Backend_Lambda 
 
+python version: 3.9 
+
 useful instructions for future: 
 mac os x has library incompatibilities with lambda's linux x86-64 architecture 
 always use zappa to create the base package, zappa uses local cache to download 
