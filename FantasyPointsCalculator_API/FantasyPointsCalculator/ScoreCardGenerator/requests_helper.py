@@ -11,7 +11,7 @@ def make_request(url:str):
     })
 
     response = session.get(url)
-    print(f'response from {url} is {response}')
+    # print(f'response from {url} is {response}')
     bs = BeautifulSoup(response.content, 'lxml')
     return bs 
 
