@@ -83,7 +83,7 @@ class BattingScoreCard(object):
 
             records.append(new_record) 
         
-        batsmen_df = pd.DataFrame(records, columns = batsmen_df_columns)  
+        batsmen_df = pd.DataFrame(records, columns = batsmen_df_columns)
         return batsmen_df
             
             
@@ -110,7 +110,7 @@ def test():
     score_url='https://www.espncricinfo.com/series/new-zealand-in-pakistan-2022-23-1339576/pakistan-vs-new-zealand-2nd-test-1339610/full-scorecard'
 
     a=BattingScoreCard(score_url) 
-    print (a.GetBattingDf()) 
+    print (a.GetBattingDf())  
 
 if __name__ =="__main__": 
     test()

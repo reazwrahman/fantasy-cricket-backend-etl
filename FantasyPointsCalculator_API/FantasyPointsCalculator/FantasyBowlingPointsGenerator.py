@@ -22,9 +22,9 @@ class FantasyBowlingPoints(object) :
         for col in int_cols:
             bowler_df[col] = bowler_df[col].astype(int) 
         
-    
-        bowler_df["base_points"] = self.points_per_wicket*bowler_df["Wickets"]       
-        bowler_df["milestone_points"] = bowler_df["Wickets"].replace({1:0, 2:5, 3:15, 4:30, 5:50, 6:50, 7:50, 8:50})        
+        bowler_df["base_points"] = self.points_per_wicket*bowler_df["Wickets"] 
+        wickets = bowler_df["Wickets"] 
+        bowler_df["milestone_points"] = bowler_df["Wickets"].apply(lambda wickets: wickets * 10)     
         bowler_df["bowling_points"] = bowler_df["base_points"] + bowler_df["milestone_points"]
                                                                               
         return bowler_df 

@@ -24,8 +24,8 @@ class FantasyBattingPoints(object) :
             batsmen_df[col] = batsmen_df[col].astype(int)
             
         batsmen_df["base_points"] = batsmen_df["Runs"]*self.points_per_run
-        batsmen_df["milestone_points"] = (np.floor(batsmen_df["Runs"]/25)).replace(
-                                          {1.0:5, 2.0:15, 3.0:30, 4.0:50, 5.0:50, 6.0:50, 7.0:50, 8.0:50})
+        milestone_increments = np.floor(batsmen_df["Runs"]/25)
+        batsmen_df["milestone_points"] = milestone_increments*10
         batsmen_df["batting_points"] = batsmen_df["base_points"] + batsmen_df["milestone_points"]
                                        
         return batsmen_df 

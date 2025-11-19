@@ -183,8 +183,8 @@ class FantasyPointsForFullSquad(object):
 def test():    
 
     from FantasyPointsCalculator.SquadGenerator.ListOfAllPlayers import AllPlayers 
-    score_url = 'https://www.espncricinfo.com/series/new-zealand-in-pakistan-2022-23-1339576/pakistan-vs-new-zealand-2nd-test-1339610/full-scorecard'
-    squad_url ='https://www.espncricinfo.com/series/new-zealand-in-pakistan-2022-23-1339576/pakistan-vs-new-zealand-2nd-test-1339610/match-squads'
+    score_url = 'https://www.espncricinfo.com/series/pakistan-in-australia-2023-24-1375835/australia-vs-pakistan-2nd-test-1375843/full-scorecard'
+    squad_url ='https://www.espncricinfo.com/series/pakistan-in-australia-2023-24-1375835/australia-vs-pakistan-2nd-test-1375843/match-squads'
     squad_generator = AllPlayers(squad_url)
     full_squad = squad_generator.GetFullSquad() 
     #print (full_squad)
@@ -208,8 +208,10 @@ def test():
     print (test.GetTotalFieldingPoints()) 
     
     print ('------------------') '''
-    print (test.GetFullSquadDf())  
+    sorted_df = test.GetFullSquadDf().sort_values(by='Total', ascending=False)
+    print (sorted_df)  
     #print(test.GetTotalFantasyPoints())  
+    return sorted_df
 
     
 
