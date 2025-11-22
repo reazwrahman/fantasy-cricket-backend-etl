@@ -24,7 +24,10 @@ while True:
         print(f'End time reached: {readable_end_time}, terminating cron job')
         break
     elif current_time >= start_time:
-        handle({'match_id':match_id},{})
+        try:
+            handle({'match_id':match_id},{})
+        except Exception as e:
+            print(e)
 
     print(f'Next execution in {update_interval} seconds')
     time.sleep(update_interval)
