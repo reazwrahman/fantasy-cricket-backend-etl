@@ -29,9 +29,9 @@ class FantasyFieldingPoints(object) :
                 fielders.extend([x.strip() for x in wicket.split("run out")[1].replace('(', '').replace(')', '').split("/")])
             if wicket.find("sub (") != -1:
                 del fielders[-1]
-        #print (f' fielders= {fielders}') # for debugging
-        fielders = [re.sub(r"\W+", ' ', fielder).strip() for fielder in fielders]          
-        #print (f' fielders2 = {fielders}') # for debugging
+        # print (f' fielders= {fielders}') # for debugging
+        fielders = [re.sub(r"\W+", ' ', fielder).strip() for fielder in fielders]
+        # print (f' fielders2 = {fielders}') # for debugging
         
         ## store the fielders dismissals result into a dictionary
         point_dict={} 
@@ -65,7 +65,8 @@ class FantasyFieldingPoints(object) :
                                 fielder_df.total_points[i], 0.0, 
                                 total_points]  
                 
-                    records.append(new_record)  
+                    records.append(new_record)
+                    break
 
         fantasy_df = pd.DataFrame(records, columns = fantasy_df_columns) 
         return (fantasy_df) 
