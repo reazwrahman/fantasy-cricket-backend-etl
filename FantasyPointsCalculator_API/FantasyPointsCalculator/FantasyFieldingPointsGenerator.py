@@ -30,9 +30,7 @@ class FantasyFieldingPoints(object) :
             if wicket.find("sub (") != -1:
                 del fielders[-1]
         # print (f' fielders= {fielders}') # for debugging
-        fielders = [re.sub(r"\W+", ' ', fielder).strip() for fielder in fielders]
-        # print (f' fielders2 = {fielders}') # for debugging
-        
+
         ## store the fielders dismissals result into a dictionary
         point_dict={} 
         for each in fielders: 
@@ -56,17 +54,27 @@ class FantasyFieldingPoints(object) :
         fantasy_df_columns=['Name','base_points','milestone_points','total_points']
         records = []
 
-        for i in range (len(fielder_df)):  
-            for each_player in self.squad:
-                if fielder_df.Name[i] in each_player:  
-                    #print (bowler_df.Name[i]) 
-                    total_points=fielder_df.total_points[i]
-                    new_record = [each_player,  
-                                fielder_df.total_points[i], 0.0, 
-                                total_points]  
-                
-                    records.append(new_record)
-                    break
+        for i in range (len(fielder_df)):
+            is_fielder_wk:bool = False
+            fielder = fielder_df.Name[i]
+            if "†" in fielder:
+                is_fielder_wk = True
+            fielder = re.sub(r"\W+", ' ', fielder).strip()
+
+            for squad_player in self.squad:
+                is_squad_player_wk:bool = False
+                if "†" in squad_player:
+                    is_squad_player_wk = True
+
+                if fielder in squad_player:
+                    if is_fielder_wk == is_squad_player_wk:
+                        total_points=fielder_df.total_points[i]
+                        new_record = [squad_player,
+                                    fielder_df.total_points[i], 0.0,
+                                    total_points]
+
+                        records.append(new_record)
+                        break
 
         fantasy_df = pd.DataFrame(records, columns = fantasy_df_columns) 
         return (fantasy_df) 
