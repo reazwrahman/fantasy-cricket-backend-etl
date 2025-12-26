@@ -1,30 +1,14 @@
 from datetime import datetime
-import hashlib
 import time
+import copy
 
-from FantasyPointsCalculator_API.FantasyPointsCalculator.ScoreCardGenerator.requests_helper import *
-from LambdaHandler import handle
-
-
-def scrape_url(scorecard_url):
-    try:
-        if validate_link(scorecard_url):
-            bs = make_request(scorecard_url)
-            table_body = bs.find_all('tbody')
-        return table_body
-    except Exception as ex:
-        print(f"ran into issues while scraping {ex}")
-        raise ex
-
-def hash_scorecard(scorecard_url):
-    # deterministic serialization: join bytes of each tbody in order
-    table_bodies = scrape_url(scorecard_url)
-    content = b"".join(t.encode("utf-8") for t in table_bodies)
-    return hashlib.sha256(content).hexdigest()
+from LambdaHandler import DbUpdater
 
 
-scorecard_url:str = input("Scorecard URL: ")
-match_id:str = input("Match ID: ")
+scorecard_url:str = input("Scorecard URL: ").strip()
+match_id:str = input("Match ID: ").strip()
+team1:str = input("Team 1: ").strip()
+team2: str = input("Team 2: ").strip()
 start_time:int = int(input('Start time in UNIX: ')) # in unix
 duration:int = int(input('Duration in hours: '))
 
@@ -36,8 +20,8 @@ readable_end_time = datetime.fromtimestamp(end_time)
 print(f'start time = {readable_start_time}')
 print(f'end time = {readable_end_time}')
 
-
-previous_hash = None
+db_updater = DbUpdater(match_id, False, scorecard_url, team1, team2)
+previous_record = None
 
 while True:
     print('============================================')
@@ -46,12 +30,13 @@ while True:
         print(f'End time reached: {readable_end_time}, terminating event trigger')
         break
     elif current_time >= start_time:
-        current_hash = hash_scorecard(scorecard_url)
-        if current_hash != previous_hash:
+        current_record = copy.deepcopy(db_updater.generate_record())
+        if current_record != previous_record:
             print("change detected in scorecard, will proceed to update leaderboard")
-            previous_hash = current_hash
+            previous_record = current_record
             try:
-                handle({'match_id':match_id},{})
+                dynamo_record:dict = db_updater.add_ranking_record()
+                db_updater.UpdateDataInDynamo()
                 print("Updated leaderboard")
             except Exception as e:
                 print(e)
