@@ -55,17 +55,12 @@ class FantasyFieldingPoints(object) :
         records = []
 
         for i in range (len(fielder_df)):
-            is_fielder_wk:bool = False
             fielder = fielder_df.Name[i]
-            if "†" in fielder:
-                is_fielder_wk = True
+            is_fielder_wk = "†" in fielder
             fielder = re.sub(r"\W+", ' ', fielder).strip()
 
             for squad_player in self.squad:
-                is_squad_player_wk:bool = False
-                if "†" in squad_player:
-                    is_squad_player_wk = True
-
+                is_squad_player_wk = "†" in squad_player
                 if fielder in squad_player:
                     if is_fielder_wk == is_squad_player_wk:
                         total_points=fielder_df.total_points[i]
